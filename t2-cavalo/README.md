@@ -1,39 +1,39 @@
-# Trabalho Prático 2 - Teoria dos Grafos
+1. Visão Geral e Modelagem
+Bom, a ideia desse projeto foi modelar os movimentos de um cavalo em um tabuleiro 3x3 usando grafos.
 
-Este projeto implementa o grafo do cavalo em um tabuleiro de xadrez 3x3 para a cadeira de Teoria dos Grafos. O objetivo é aplicar conceitos de modelagem, componentes conexas, distância mínima e detecção de ciclos.
+Então, o que eu fiz foi transformar cada casa do tabuleiro em um vértice, numerando de 0 até 8, seguindo a ordem normal de leitura.
 
-## Estrutura do Projeto
+As conexões entre esses vértices representam os movimentos válidos do cavalo.
 
-- `dados/entrada.txt`: Contém a lista de arestas do grafo do cavalo no formato `algs4`.
-- `src/main.py`: Ponto de entrada que executa todas as análises solicitadas.
-- `src/graph.py`: Classe `Graph` para representação por lista de adjacência.
-- `src/cc.py`: Classe `ConnectedComponents` para identificar componentes conexas via DFS.
-- `src/cycle.py`: Classe `CycleDetector` para detecção de ciclos e retorno de um ciclo encontrado.
-- `src/bfs.py`: Classe `BreadthFirstSearch` para cálculo de distância mínima entre vértices.
+Um ponto interessante é que, nesse tabuleiro 3x3, a posição central, que é o vértice 4, acaba ficando isolada. Isso acontece porque o cavalo simplesmente não consegue chegar lá nem sair de lá com movimentos válidos.
 
-## Modelagem do Tabuleiro 3x3
+E o arquivo de entrada segue o padrão algs4, que já facilita bastante na hora de ler e organizar os dados.
 
-Os vértices são numerados de 0 a 8 na ordem de leitura (esquerda para direita, cima para baixo):
+2. Estrutura de Dados e Organização
 
-```text
-(0,0) -> 0 | (0,1) -> 1 | (0,2) -> 2
-(1,0) -> 3 | (1,1) -> 4 | (1,2) -> 5
-(2,0) -> 6 | (2,1) -> 7 | (2,2) -> 8
-```
+Sobre a implementação, eu separei o código em partes pra ficar mais organizado e fácil de entender.
 
-## Como Executar
+A classe principal é a Graph, que usa lista de adjacência. Basicamente, cada vértice guarda uma lista com seus vizinhos.
 
-Para rodar o programa, certifique-se de estar no diretório raiz do projeto (`t2-cavalo`) e execute:
+Escolhi isso porque é mais eficiente, já que o grafo não tem tantas conexões — então não faz sentido usar matriz.
 
-```bash
-python3 src/main.py
-```
+E o main.py funciona como o “orquestrador”: ele lê o arquivo, monta o grafo e chama os algoritmos.
 
-## Respostas Esperadas
+3. Análise de Conectividade e Distância 
 
-O programa gera automaticamente as respostas para as seguintes perguntas:
-1. Lista de adjacência do grafo.
-2. Componentes conexas e seus vértices.
-3. Distância mínima entre (0,0) e (2,2).
-4. Existência de ciclos e um exemplo de ciclo encontrado.
-5. Análise de complexidade do algoritmo de ciclo.
+Pra analisar a conectividade, usei DFS na classe de componentes conexas.
+
+O algoritmo percorre o grafo e identifica grupos conectados. No final, dá pra ver que existem dois grupos: um com os 8 vértices das bordas e outro só com o vértice central isolado.
+
+Já pra calcular o menor caminho, usei BFS.
+
+A diferença é que a BFS vai por níveis, então ela garante que o primeiro caminho encontrado já é o menor possível.
+
+Nesse caso, ela mostra que o cavalo precisa de 4 movimentos pra sair de um canto e chegar no canto oposto do tabuleiro.
+
+4. Detecção de Ciclos e Complexidade 
+Na parte de ciclos, também usei DFS, mas com um detalhe a mais: o algoritmo guarda de onde veio cada vértice.
+
+Assim, se ele encontra um vértice já visitado que não é o “pai”, significa que existe um ciclo.
+
+E pra finalizar, em termos de desempenho, todos os algoritmos rodam em tempo O de V mais E e usam espaço O de V, o que é bem eficiente pra esse tipo de problema.
